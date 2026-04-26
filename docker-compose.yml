@@ -1,0 +1,86 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: clinic_db
+      POSTGRES_USER: clinic_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clinic_user -d clinic_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: always
+    environment:
+      DB_NAME: clinic_db
+      DB_USER: clinic_user
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 5432
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: "False"
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - static_files:/app/staticfiles
+      - media_files:/app/media
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn clinic_project.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+  frontend:
+    build: ./frontend
+    restart: always
+    volumes:
+      - frontend_build:/app/build
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_files:/static
+      - media_files:/media
+      - frontend_build:/var/www/html
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - frontend
+
+  backup:
+    image: postgres:15
+    restart: always
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./backups:/backups
+    entrypoint: >
+      sh -c "while true; do
+        sleep 86400;
+        pg_dump -h db -U clinic_user clinic_db > /backups/backup_$$(date +%Y%m%d_%H%M%S).sql;
+        find /backups -name '*.sql' -mtime +7 -delete;
+        echo 'بەکاپ تەواوبوو';
+      done"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  static_files:
+  media_files:
+  frontend_build:
