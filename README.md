@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏥 سیستەمی کلینیک - راهنمای دامەزراندن
 
 ## پێداویستییەکان
@@ -84,3 +85,7 @@ Frontend ئێستا لە: http://localhost:3000
 - **Frontend**: React.js
 - **Database**: PostgreSQL
 - **Auth**: JWT Token
+=======
+# clinic-system
+.
+>>>>>>> 4681525ac6a0e388531f4867bde3d9ae5720b344
