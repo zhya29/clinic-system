@@ -2,15 +2,35 @@
 <html lang="ku" dir="rtl">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>سیستەمی کلینیک</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#534AB7" />
+    <meta name="description" content="سیستەمی بەڕێوەبردنی کلینیک و نەخۆشەکان" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="کلینیکی ژیا" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <title>کلینیکی ژیا</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <style>
       * { box-sizing: border-box; }
-      body { margin: 0; font-family: 'Segoe UI', Tahoma, 'Arial', sans-serif; }
+      body { margin: 0; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
+      @media (max-width: 768px) {
+        * { -webkit-tap-highlight-color: transparent; }
+      }
     </style>
   </head>
   <body>
+    <noscript>پێویستە JavaScript چالاک بێت.</noscript>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(function() { console.log('SW تۆمارکرا'); })
+            .catch(function(e) { console.log('SW شکستی هێنا:', e); });
+        });
+      }
+    </script>
   </body>
 </html>

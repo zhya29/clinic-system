@@ -1,0 +1,27 @@
+{
+  "short_name": "کلینیک",
+  "name": "سیستەمی کلینیکی ژیا",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#534AB7",
+  "background_color": "#f0f4f8",
+  "description": "سیستەمی بەڕێوەبردنی کلینیک و نەخۆشەکان"
+}

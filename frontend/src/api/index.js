@@ -42,7 +42,7 @@ export const patientsAPI = {
   getAll: (search = '') => api.get(`/patients/?search=${search}`),
   getOne: (id) => api.get(`/patients/${id}/`),
   create: (data) => api.post('/patients/', data),
-  update: (id, data) => api.put(`/patients/${id}/`, data),
+  update: (id, data) => api.patch(`/appointments/${id}/`, data),
   delete: (id) => api.delete(`/patients/${id}/`),
   getStats: () => api.get('/patients/stats/'),
 };
@@ -54,7 +54,7 @@ export const appointmentsAPI = {
   },
   getToday: () => api.get('/appointments/today/'),
   create: (data) => api.post('/appointments/', data),
-  update: (id, data) => api.put(`/appointments/${id}/`, data),
+  update: (id, data) => api.patch(`/appointments/${id}/`, data),
   getStats: () => api.get('/appointments/stats/'),
 };
 
